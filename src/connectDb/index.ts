@@ -23,3 +23,8 @@ async function dbconnect() {
 }
 
 export default  dbconnect;
+
+
+
+
+// mongodb+srv://gmkandhro88:gm@cluster0.crzn1.mongodb.net/healthcare

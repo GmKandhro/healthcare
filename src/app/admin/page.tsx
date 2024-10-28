@@ -1,13 +1,30 @@
+"use client";
+
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-
 import { StatCard } from "@/components/StatCard";
 import { columns } from "@/components/table/columns";
 import { DataTable } from "@/components/table/DataTable";
 import { getRecentAppointmentList } from "@/lib/actions/appointment.actions";
 
-const AdminPage = async () => {
-  const appointments = await getRecentAppointmentList();
+const AdminPage = () => {
+  const [appointments, setAppointments] = useState({
+    scheduledCount: 0,
+    pendingCount: 0,
+    cancelledCount: 0,
+    documents: [],
+  });
+
+  useEffect(() => {
+    const fetchAppointments = async () => {
+      const result = await getRecentAppointmentList();
+      setAppointments(result);
+    };
+
+    fetchAppointments();
+  }, []);
+
   return (
     <div className="mx-auto flex max-w-7xl flex-col space-y-14">
       <header className="admin-header">

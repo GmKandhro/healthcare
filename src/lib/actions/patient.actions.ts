@@ -1,4 +1,4 @@
-"use client";
+
 
 import axios from 'axios';
 import { Appointment } from '../../../types/appwrite.types';
@@ -76,8 +76,7 @@ export const getPatient = async (userId: string) => {
   try {
     // Make the API call to fetch patient details based on the userId (patientId)
     const response = await axios.get(`/api/patient/getPatient/${userId}`);
-    const response2 = await axios.get(`/api/appointment/getAllAppointments`);
-    // Return the patient data from the response
+   
     return response.data.data;  // Assuming the data is in 'data'
   } catch (error: any) {
     console.error(
@@ -87,7 +86,6 @@ export const getPatient = async (userId: string) => {
     throw new Error("Failed to fetch patient details");
   }
 };
-
 
 
 

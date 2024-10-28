@@ -25,18 +25,17 @@ export const createAppointment :any = async (
   }
 };
 
-// GET    APPOINTEMNT
 
+
+
+// GET    APPOINTEMNT
 export  const getAppointment = async (appointmentId: string) => {
   try {
-    // console.log("appointment is retrieved", appointmentId);
-    
-    // Add leading slash `/` to the API route
-    
-    const baseURL = process.env.NEXT_PUBLIC_API_BASE_URL 
-    const appointment = await axios.get(`${baseURL}/api/appointment/getAppointment/${appointmentId}`);
-    
-    // console.log("appointment is retrieved5", appointment);
+
+    console.log("id geeeeted ", appointmentId)
+   
+    const appointment = await axios.get(`/api/appointment/getAppointment/${appointmentId}`);
+
     return appointment.data.data;
   } catch (error) {
     console.error(
@@ -47,37 +46,10 @@ export  const getAppointment = async (appointmentId: string) => {
 };
 
 
-
-
-//  SEND SMS NOTIFICATION
-export const sendSMSNotification = async (phone: string, content: string) => {
-  try {
-    const response = await axios.post('/api/twilio', {
-      to: "+"+phone,
-      body:content
-    }, {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    console.log(response.data); // Handle the response d
-    return response.data
-  } catch (error) {
-    console.error("An error occurred while sending sms:", error);
-  }
-};
-
-
-
-
-
-// Get all Appointments 
+// GET All appointments 
 export const getRecentAppointmentList = async () => {
   try {
-    // Fetch all appointments from the API
-    const baseURL =  process.env.NEXT_PUBLIC_API_BASE_URL;
-    const response = await axios.get(`http://localhost:3000/api/appointment/getAllAppointments`);
+    const response = await axios.get(`/api/appointment/getAllAppointments`);
     const appointments = response.data;
     // console.log("here is all pointments ",response.data)
 
@@ -123,6 +95,30 @@ export const getRecentAppointmentList = async () => {
     throw new Error("Failed to fetch recent appointments");
   }
 };
+
+
+//  SEND SMS NOTIFICATION
+export const sendSMSNotification = async (phone: string, content: string) => {
+  try {
+    const response = await axios.post('/api/twilio', {
+      to: "+"+phone,
+      body:content
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    console.log(response.data); // Handle the response d
+    return response.data
+  } catch (error) {
+    console.error("An error occurred while sending sms:", error);
+  }
+};
+
+
+
+
 
 
 
