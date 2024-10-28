@@ -1,5 +1,5 @@
 // "use client";
-//  twilio recovery code ===>  19UZU2EH611S31J9CZ6FTU5R
+
 
 import { AppointmentModal } from "@/components/AppointmentModal";
 
@@ -109,7 +109,7 @@ export const sendSMSNotification = async (phone: string, content: string) => {
       },
     });
 
-    console.log(response.data); // Handle the response d
+  
     return response.data
   } catch (error) {
     console.error("An error occurred while sending sms:", error);
@@ -132,28 +132,12 @@ export const updateAppointment = async ({
   type,
 }: UpdateAppointmentParams) => {
   try {
-    /* Update appointment to scheduled -> https://appwrite.io/docs/references/cloud/server-nodejs/databases#updateDocument
-    // console.log(appointmentId)
-    // const updatedAppointment = await databases.updateDocument(
-    //   DATABASE_ID!,
-    //   APPOINTMENT_COLLECTION_ID!,
-    //   appointmentId,
-    //   appointment
-    // );
-
-
-    // if (!updatedAppointment) throw Error;
-
-    // const smsMessage = `Greetings from CarePulse. ${type === "schedule" ? `Your appointment is confirmed for ${formatDateTime(appointment.schedule!, timeZone).dateTime} with Dr. ${appointment.primaryPhysician}` : `We regret to inform that your appointment for ${formatDateTime(appointment.schedule!, timeZone).dateTime} is cancelled. Reason:  ${appointment.cancellationReason}`}.`;
-      
-     await sendSMSNotification(userId, smsMessage);
-     return parseStringify(updatedAppointment);*/
 
         const smsMessage = `Greetings from CarePulse. ${type === "schedule" ? `Your appointment is confirmed for ${formatDateTime(appointment.schedule!, timeZone).dateTime} with Dr. ${appointment.primaryPhysician}` : `We regret to inform that your appointment for ${formatDateTime(appointment.schedule!, timeZone).dateTime} is cancelled. Reason:  ${appointment.cancellationReason}`}.`;
      
         const res = await axios.patch(`/api/appointment/updateAppointment/${appointmentId}`,appointment)
         await sendSMSNotification(phone, smsMessage);
-        revalidatePath("/admin");
+        // revalidatePath("/admin");
     return res.data.data;
 
   } catch (error) {
