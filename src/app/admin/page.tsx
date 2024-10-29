@@ -18,9 +18,13 @@ const AdminPage = () => {
 
   useEffect(() => {
     const fetchAppointments = async () => {
-      const result = await getRecentAppointmentList();
-      console.log("the result is ",result)
-      setAppointments(result);
+      try {
+        const result = await getRecentAppointmentList();
+        setAppointments(result);
+      } catch (error) {
+        console.error("Error fetching appointments:", error);
+      }
+      
     };
 
     fetchAppointments();
