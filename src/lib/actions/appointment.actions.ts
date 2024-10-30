@@ -133,7 +133,7 @@ export const updateAppointment = async ({
         const smsMessage = `Greetings from CarePulse. ${type === "schedule" ? `Your appointment is confirmed for ${formatDateTime(appointment.schedule!, timeZone).dateTime} with Dr. ${appointment.primaryPhysician}` : `We regret to inform that your appointment for ${formatDateTime(appointment.schedule!, timeZone).dateTime} is cancelled. Reason:  ${appointment.cancellationReason}`}.`;
      
         const res = await axios.patch(`/api/appointment/updateAppointment/${appointmentId}`,appointment)
-        getRecentAppointmentList()
+        await getRecentAppointmentList()
         // await sendSMSNotification(phone, smsMessage);
     return res.data.data;
 
