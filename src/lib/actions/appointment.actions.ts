@@ -1,9 +1,7 @@
-// "use client";
+"use client";
 
+import useSWR, { mutate } from 'swr';
 
-import { AppointmentModal } from "@/components/AppointmentModal";
-
-import { Appointment } from "../../../types/appwrite.types";
 
 
 import { formatDateTime, parseStringify } from "../utils";
@@ -72,6 +70,7 @@ export const sendSMSNotification = async (phone: string, content: string) => {
 
 
 
+
 export const updateAppointment = async ({
   appointmentId,
   phone,
@@ -87,7 +86,7 @@ export const updateAppointment = async ({
      
         const res = await axios.patch(`/api/appointment/updateAppointment/${appointmentId}`,appointment)
         // await sendSMSNotification(phone, smsMessage);
-        revalidatePath("/admin");
+        mutate('/api/appointment/getAllAppointments');
     return res.data.data;
 
   } catch (error) {

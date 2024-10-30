@@ -44,6 +44,7 @@
     "react-hook-form": "^7.52.1",
     "react-phone-number-input": "^3.4.1",
     "react-toastify": "^10.0.5",
+    "swr": "^2.2.5",
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7",
     "twilio": "^5.3.5",

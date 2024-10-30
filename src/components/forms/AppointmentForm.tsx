@@ -88,7 +88,7 @@ export const AppointmentForm = ({
           );
         }
       } else if (appointment && patient[0]._id) {
-        console.log("appointment appointment appointment patient phone ",appointment.patient.phone)
+        // console.log("appointment appointment appointment patient phone ",appointment.patient.phone)
         const appointmentToUpdate = {
           userId,
           appointmentId: appointment._id!,
