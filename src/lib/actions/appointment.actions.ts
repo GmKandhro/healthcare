@@ -1,11 +1,9 @@
 "use client";
 
-import useSWR, { mutate } from 'swr';
 
 
 
 import { formatDateTime, parseStringify } from "../utils";
-import { revalidatePath } from "next/cache";
 import axios from "axios";
 
 //  CREATE APPOINTMENT
@@ -86,7 +84,6 @@ export const updateAppointment = async ({
      
         const res = await axios.patch(`/api/appointment/updateAppointment/${appointmentId}`,appointment)
         // await sendSMSNotification(phone, smsMessage);
-        mutate('/api/appointment/getAllAppointments');
     return res.data.data;
 
   } catch (error) {
