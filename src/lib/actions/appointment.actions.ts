@@ -64,6 +64,41 @@ export const sendSMSNotification = async (phone: string, content: string) => {
 
 
 
+
+
+
+
+
+export const updateAppointment = async ({
+  appointmentId,
+  phone,
+  userId, 
+  // @ts-ignore
+  timeZone,
+  appointment,
+  type,
+}: UpdateAppointmentParams) => {
+  try {
+
+        const smsMessage = `Greetings from CarePulse. ${type === "schedule" ? `Your appointment is confirmed for ${formatDateTime(appointment.schedule!, timeZone).dateTime} with Dr. ${appointment.primaryPhysician}` : `We regret to inform that your appointment for ${formatDateTime(appointment.schedule!, timeZone).dateTime} is cancelled. Reason:  ${appointment.cancellationReason}`}.`;
+     
+        const res = await axios.patch(`/api/appointment/updateAppointment/${appointmentId}`,appointment)
+        getRecentAppointmentList()
+        // await sendSMSNotification(phone, smsMessage);
+    return res.data.data;
+
+  } catch (error) {
+    console.error("An error occurred while scheduling an appointment:", error);
+  }
+};
+
+
+
+
+
+
+
+
 // GET All appointments 
 export const getRecentAppointmentList = async () => {
   try {
@@ -113,38 +148,3 @@ export const getRecentAppointmentList = async () => {
     throw new Error("Failed to fetch recent appointments");
   }
 };
-
-
-
-
-
-
-export const updateAppointment = async ({
-  appointmentId,
-  phone,
-  userId, 
-  // @ts-ignore
-  timeZone,
-  appointment,
-  type,
-}: UpdateAppointmentParams) => {
-  try {
-
-        const smsMessage = `Greetings from CarePulse. ${type === "schedule" ? `Your appointment is confirmed for ${formatDateTime(appointment.schedule!, timeZone).dateTime} with Dr. ${appointment.primaryPhysician}` : `We regret to inform that your appointment for ${formatDateTime(appointment.schedule!, timeZone).dateTime} is cancelled. Reason:  ${appointment.cancellationReason}`}.`;
-     
-        const res = await axios.patch(`/api/appointment/updateAppointment/${appointmentId}`,appointment)
-        await getRecentAppointmentList()
-        // await sendSMSNotification(phone, smsMessage);
-    return res.data.data;
-
-  } catch (error) {
-    console.error("An error occurred while scheduling an appointment:", error);
-  }
-};
-
-
-
-
-
-
-

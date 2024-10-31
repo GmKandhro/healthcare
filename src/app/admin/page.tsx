@@ -16,6 +16,8 @@ const AdminPage = () => {
     documents: [],
   });
 
+  const result = await getRecentAppointmentList();
+  setAppointments(result);
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
