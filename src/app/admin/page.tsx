@@ -16,8 +16,18 @@ const AdminPage = () => {
     documents: [],
   });
 
-  const result = await getRecentAppointmentList();
-  setAppointments(result);
+  const fetchAppointments = async () => {
+    try {
+      const result = await getRecentAppointmentList();
+      setAppointments(result);
+    } catch (error) {
+      console.error("Error fetching appointments:", error);
+    }
+    
+  };
+
+  fetchAppointments();
+
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
