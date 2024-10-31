@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { StatCard } from "@/components/StatCard";
@@ -16,31 +16,18 @@ const AdminPage = () => {
     documents: [],
   });
 
-  const fetchAppointments = async () => {
+  const fetchAppointments = useCallback(async () => {
     try {
       const result = await getRecentAppointmentList();
       setAppointments(result);
     } catch (error) {
       console.error("Error fetching appointments:", error);
     }
-    
-  };
-
-  fetchAppointments();
+  }, []);
 
   useEffect(() => {
-    const fetchAppointments = async () => {
-      try {
-        const result = await getRecentAppointmentList();
-        setAppointments(result);
-      } catch (error) {
-        console.error("Error fetching appointments:", error);
-      }
-      
-    };
-
     fetchAppointments();
-  }, []);
+  }, [fetchAppointments]);
 
   return (
     <div className="mx-auto flex max-w-7xl flex-col space-y-14">
