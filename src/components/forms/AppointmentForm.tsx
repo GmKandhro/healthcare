@@ -92,7 +92,7 @@ export const AppointmentForm = ({
         // console.log("appointment appointment appointment patient phone ",appointment.patient.phone)
         const appointmentToUpdate = {
           userId,
-          appointmentId: appointment._id!,
+          appointmentId: appointment._id,
           phone:appointment.patient.phone,
           appointment: {
             primaryPhysician: values.primaryPhysician,
@@ -104,10 +104,13 @@ export const AppointmentForm = ({
         };
 
         const updatedAppointment = await updateAppointment(appointmentToUpdate);
+        console.log("ok gm kandhro", updatedAppointment)
         if (updatedAppointment) {
-          router.refresh()
           setOpen && setOpen(false);
           form.reset();
+          setTimeout(() => {
+            router.push("/admin");
+          }, 0); 
         }
       }
     } catch (error) {
