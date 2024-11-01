@@ -7,6 +7,7 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+
 import { SelectItem } from "@/components/ui/select";
 import { Doctors } from "../../../constants";
 import { createAppointment, updateAppointment } from "@/lib/actions/appointment.actions";
@@ -104,6 +105,7 @@ export const AppointmentForm = ({
 
         const updatedAppointment = await updateAppointment(appointmentToUpdate);
         if (updatedAppointment) {
+          router.refresh()
           setOpen && setOpen(false);
           form.reset();
         }

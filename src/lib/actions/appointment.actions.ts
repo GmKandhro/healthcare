@@ -10,6 +10,7 @@ import axios from "axios";
 export const createAppointment :any = async (
   appointment: CreateAppointmentParams
 ) => {
+
   try {
     // console.log("Appointmenttttt data11 ",appointment)
     const response = await axios.post('/api/appointment/createAppointment', appointment);
@@ -85,6 +86,7 @@ export const updateAppointment = async ({
         const res = await axios.patch(`/api/appointment/updateAppointment/${appointmentId}`,appointment)
         getRecentAppointmentList()
         // await sendSMSNotification(phone, smsMessage);
+        
     return res.data.data;
 
   } catch (error) {
