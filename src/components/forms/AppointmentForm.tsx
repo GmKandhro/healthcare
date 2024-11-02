@@ -108,9 +108,8 @@ export const AppointmentForm = ({
         if (updatedAppointment) {
           setOpen && setOpen(false);
           form.reset();
-          setTimeout(() => {
-            router.push("/admin");
-          }, 0); 
+          router.push("/admin");
+         
         }
       }
     } catch (error) {
