@@ -108,8 +108,7 @@ export const AppointmentForm = ({
         if (updatedAppointment) {
           setOpen && setOpen(false);
           form.reset();
-          router.refresh();
-         
+          window.location.reload();
         }
       }
     } catch (error) {
