@@ -110,7 +110,7 @@ export function DataTable<TData, TValue>({
                           <strong>Email:</strong> {row.original.patient.email}
                         </p>
                         <p>
-                          <strong>Phone:</strong> {row.original.patient.phone}
+                          <strong>Phone:</strong> <p>+</p>{row.original.patient.phone}
                         </p>
                         <p>
                           <strong>pastMedicalHistory:</strong> {row.original.patient.pastMedicalHistory}
