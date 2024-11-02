@@ -86,7 +86,7 @@ export const updateAppointment = async ({
         const res = await axios.patch(`/api/appointment/updateAppointment/${appointmentId}`,appointment)
         // getRecentAppointmentList()
         // revalidatePath("/admin")
-        // await sendSMSNotification(phone, smsMessage);
+        await sendSMSNotification(phone, smsMessage);
         
     return res.data;
 
