@@ -109,8 +109,6 @@ export const AppointmentForm = ({
           setOpen && setOpen(false);
           form.reset();
           router.refresh();
-          window.location.reload();
-
         }
       }
     } catch (error) {
