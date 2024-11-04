@@ -7,6 +7,7 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
+import { getRecentAppointmentList } from "@/lib/actions/appointment.actions";
 
 import { SelectItem } from "@/components/ui/select";
 import { Doctors } from "../../../constants";
@@ -108,8 +109,7 @@ export const AppointmentForm = ({
         if (updatedAppointment) {
           setOpen && setOpen(false);
           form.reset();
-          // router.refresh();
-         
+          getRecentAppointmentList()
         }
       }
     } catch (error) {
