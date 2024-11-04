@@ -70,6 +70,8 @@ export const sendSMSNotification = async (phone: string, content: string) => {
 
 
 
+
+
 export const updateAppointment = async ({
   appointmentId,
   phone,
@@ -80,33 +82,44 @@ export const updateAppointment = async ({
   type,
 }: UpdateAppointmentParams) => {
   try {
+    const smsMessage = `Greetings from CarePulse. ${
+      type === "schedule"
+        ? `Your appointment is confirmed for ${formatDateTime(
+            appointment.schedule!,
+            timeZone
+          ).dateTime} with Dr. ${appointment.primaryPhysician}`
+        : `We regret to inform that your appointment for ${formatDateTime(
+            appointment.schedule!,
+            timeZone
+          ).dateTime} is cancelled. Reason: ${appointment.cancellationReason}`
+    }.`;
 
-        const smsMessage = `Greetings from CarePulse. ${type === "schedule" ? `Your appointment is confirmed for ${formatDateTime(appointment.schedule!, timeZone).dateTime} with Dr. ${appointment.primaryPhysician}` : `We regret to inform that your appointment for ${formatDateTime(appointment.schedule!, timeZone).dateTime} is cancelled. Reason:  ${appointment.cancellationReason}`}.`;
-     
-        const res = await axios.patch(`/api/appointment/updateAppointment/${appointmentId}`,appointment)
-        // await getRecentAppointmentList()
-        await sendSMSNotification(phone, smsMessage);
-        
-    return res.data;
+    // Update appointment in the backend
+    const res = await axios.patch(
+      `/api/appointment/updateAppointment/${appointmentId}`,
+      appointment
+    );
 
+    // Send SMS notification
+    await sendSMSNotification(phone, smsMessage);
+
+    // Get updated list of appointments and counts
+    const updatedAppointments = await getRecentAppointmentList();
+    return {
+      updatedAppointment: res.data,
+      ...updatedAppointments,
+    };
   } catch (error) {
-    console.error("An error occurred while scheduling an appointment:", error);
+    console.error("An error occurred while updating an appointment:", error);
+    throw new Error("Failed to update appointment");
   }
 };
 
-
-
-
-
-
-
-
-// GET All appointments 
+// GET All appointments
 export const getRecentAppointmentList = async () => {
   try {
     const response = await axios.get(`/api/appointment/getAllAppointments`);
     const appointments = response.data;
-    // console.log("here is all pointments ",response.data)
 
     // Initial counts for the different statuses
     const initialCounts = {
@@ -115,7 +128,7 @@ export const getRecentAppointmentList = async () => {
       cancelledCount: 0,
     };
 
-    // Reduce over the appointments to count statuses
+    // Count appointments by status
     const counts = appointments.reduce(
       (acc: any, appointment: any) => {
         switch (appointment.status) {
@@ -134,19 +147,13 @@ export const getRecentAppointmentList = async () => {
       initialCounts
     );
 
-    // Prepare the data object to return
-    const data = {
-      totalCount: appointments.length, // Total number of appointments
+    return {
+      totalCount: appointments.length,
       ...counts,
-      documents: appointments, // The appointments list itself
+      documents: appointments,
     };
-
-    return data
   } catch (error) {
-    console.error(
-      "An error occurred while retrieving the recent appointments:",
-      error
-    );
+    console.error("An error occurred while retrieving the appointments:", error);
     throw new Error("Failed to fetch recent appointments");
   }
 };

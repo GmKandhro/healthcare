@@ -15,13 +15,20 @@ const AdminPage = () => {
     cancelledCount: 0,
     documents: [],
   });
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   const fetchAppointments = useCallback(async () => {
+    setIsLoading(true);
     try {
       const result = await getRecentAppointmentList();
       setAppointments(result);
+      setError(null); // Clear any previous error
     } catch (error) {
       console.error("Error fetching appointments:", error);
+      setError("Failed to load appointments. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
   }, []);
 
@@ -37,8 +44,9 @@ const AdminPage = () => {
             src="/assets/icons/logo-full.svg"
             height={32}
             width={162}
-            alt="logo"
+            alt="Company logo"
             className="h-8 w-fit"
+            priority
           />
         </Link>
 
@@ -58,23 +66,29 @@ const AdminPage = () => {
             type="appointments"
             count={appointments.scheduledCount}
             label="Scheduled appointments"
-            icon={"/assets/icons/appointments.svg"}
+            icon="/assets/icons/appointments.svg"
           />
           <StatCard
             type="pending"
             count={appointments.pendingCount}
             label="Pending appointments"
-            icon={"/assets/icons/pending.svg"}
+            icon="/assets/icons/pending.svg"
           />
           <StatCard
             type="cancelled"
             count={appointments.cancelledCount}
             label="Cancelled appointments"
-            icon={"/assets/icons/cancelled.svg"}
+            icon="/assets/icons/cancelled.svg"
           />
         </section>
 
-        <DataTable columns={columns} data={appointments.documents} />
+        {error ? (
+          <p className="text-red-500">{error}</p>
+        ) : isLoading ? (
+          <p>Loading appointments...</p>
+        ) : (
+          <DataTable columns={columns} data={appointments.documents} />
+        )}
       </main>
     </div>
   );
