@@ -7,12 +7,9 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { getRecentAppointmentList } from "@/lib/actions/appointment.actions";
-
+import { getRecentAppointmentList, createAppointment, updateAppointment } from "@/lib/actions/appointment.actions";
 import { SelectItem } from "@/components/ui/select";
 import { Doctors } from "../../../constants";
-import { createAppointment, updateAppointment } from "@/lib/actions/appointment.actions";
-  
 import { getAppointmentSchema } from "@/lib/validation";
 import { Appointment } from "../../../types/appwrite.types";
 
@@ -29,12 +26,14 @@ export const AppointmentForm = ({
   type = "create",
   appointment,
   setOpen,
+  onAppointmentUpdate,
 }: {
   userId: string;
   patientId?: string;
   type: "create" | "schedule" | "cancel";
   appointment?: Appointment;
   setOpen?: Dispatch<SetStateAction<boolean>>;
+  onAppointmentUpdate?: () => void; // New callback to refresh data
 }) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
@@ -56,8 +55,6 @@ export const AppointmentForm = ({
 
     try {
       const patient: any = await getPatient(userId);
-      // console.log("in Appointment onSubmit is working", patient[0]._id)
-
       let status;
       switch (type) {
         case "schedule":
@@ -90,11 +87,10 @@ export const AppointmentForm = ({
           );
         }
       } else if (appointment && patient[0]._id) {
-        // console.log("appointment appointment appointment patient phone ",appointment.patient.phone)
         const appointmentToUpdate = {
           userId,
           appointmentId: appointment._id,
-          phone:appointment.patient.phone,
+          phone: appointment.patient.phone,
           appointment: {
             primaryPhysician: values.primaryPhysician,
             schedule: new Date(values.schedule),
@@ -105,11 +101,11 @@ export const AppointmentForm = ({
         };
 
         const updatedAppointment = await updateAppointment(appointmentToUpdate);
-        console.log("ok gm kandhro", updatedAppointment)
+        
         if (updatedAppointment) {
           setOpen && setOpen(false);
           form.reset();
-          getRecentAppointmentList()
+          onAppointmentUpdate && onAppointmentUpdate(); // Trigger data refresh
         }
       }
     } catch (error) {
