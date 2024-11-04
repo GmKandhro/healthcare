@@ -118,7 +118,12 @@ export const updateAppointment = async ({
 // GET All appointments
 export const getRecentAppointmentList = async () => {
   try {
-    const response = await axios.get(`/api/appointment/getAllAppointments`);
+    const response = await axios.get(`/api/appointment/getAllAppointments`, {
+      headers: {
+        'Cache-Control': 'no-cache',
+      },
+    });
+    
     const appointments = response.data;
 
     // Initial counts for the different statuses
