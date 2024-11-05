@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { Suspense, useCallback, useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { StatCard } from "@/components/StatCard";
@@ -37,6 +37,7 @@ const AdminPage = () => {
   }, [fetchAppointments]);
 
   return (
+    <Suspense fallback={<div>Loading....</div>}>
     <div className="mx-auto flex max-w-7xl flex-col space-y-14">
       <header className="admin-header">
         <Link href="/" className="cursor-pointer">
@@ -91,6 +92,7 @@ const AdminPage = () => {
         )}
       </main>
     </div>
+    </Suspense>
   );
 };
 

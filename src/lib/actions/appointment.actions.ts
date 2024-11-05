@@ -118,7 +118,6 @@ export const updateAppointment = async ({
 // GET All appointments
 export const getRecentAppointmentList = async () => {
   try {
-     "use cache"
     const response = await axios.get(`/api/appointment/getAllAppointments`)
     const appointments = response.data;
 
