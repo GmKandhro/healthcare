@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans as FontSans } from "next/font/google";
 import "./globals.css";
+import { AppointmentsProvider } from "../../context/AppointmentsContext";
 
 import { cn } from "@/lib/utils";
 import { ThemeProvider } from "next-themes";
@@ -32,11 +33,13 @@ export default function RootLayout({
           "min-h-screen bg-dark-300 font-sans antialiased",
           fontSans.variable
         )}>
+          <AppointmentsProvider>
             <ThemeProvider
              attribute="class"
              defaultTheme="dark">
           {children}
         </ThemeProvider>
+        </AppointmentsProvider>
         </body>
     </html>
   );

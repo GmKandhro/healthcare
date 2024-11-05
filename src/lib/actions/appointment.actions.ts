@@ -2,6 +2,7 @@
 
 
 
+import { useAppointments } from "../../../context/AppointmentsContext";
 import { formatDateTime, parseStringify } from "../utils";
 import axios from "axios";
 
@@ -115,7 +116,7 @@ export const getRecentAppointmentList = async () => {
 
 
 
-export const updateAppointment = async ({
+export const UpdateAppointment = async ({
   appointmentId,
   phone,
   userId, 
@@ -125,6 +126,7 @@ export const updateAppointment = async ({
   type,
 }: UpdateAppointmentParams) => {
   try {
+    const {appointments, setAppointments} = useAppointments();
     const smsMessage = `Greetings from CarePulse. ${
       type === "schedule"
         ? `Your appointment is confirmed for ${formatDateTime(
@@ -139,7 +141,7 @@ export const updateAppointment = async ({
 
     // Update appointment in the backend
     const res = await axios.patch(
-      `/api/appointment/updateAppointment/${appointmentId}`,
+      `/api/appointment/UpdateAppointment/${appointmentId}`,
       appointment
     );
 
@@ -147,8 +149,13 @@ export const updateAppointment = async ({
     await sendSMSNotification(phone, smsMessage);
 
     // Get updated list of appointments and counts
-   await getRecentAppointmentList();
-   return res.data
+   const updatedAppointments = await getRecentAppointmentList();
+   setAppointments(updatedAppointments)
+
+   return {
+    updatedAppointment: res.data,
+    ...updatedAppointments,
+  };
   } catch (error) {
     console.error("An error occurred while updating an appointment:", error);
     throw new Error("Failed to update appointment");

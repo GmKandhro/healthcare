@@ -7,14 +7,11 @@ import { StatCard } from "@/components/StatCard";
 import { columns } from "@/components/table/columns";
 import { DataTable } from "@/components/table/DataTable";
 import { getRecentAppointmentList } from "@/lib/actions/appointment.actions";
+import { useAppointments } from "../../../context/AppointmentsContext";
 
 const AdminPage = () => {
-  const [appointments, setAppointments] = useState({
-    scheduledCount: 0,
-    pendingCount: 0,
-    cancelledCount: 0,
-    documents: [],
-  });
+  const {appointments, setAppointments} = useAppointments();
+  
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 

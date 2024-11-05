@@ -7,7 +7,8 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import { getRecentAppointmentList, createAppointment, updateAppointment } from "@/lib/actions/appointment.actions";
+import { getRecentAppointmentList, createAppointment, sendSMSNotification } from "@/lib/actions/appointment.actions";
+// import { updateAppointment } from "../updateAppointment";
 import { SelectItem } from "@/components/ui/select";
 import { Doctors } from "../../../constants";
 import { getAppointmentSchema } from "@/lib/validation";
@@ -19,6 +20,9 @@ import CustomFormField, { FormFieldType } from "../CustomFormField";
 import SubmitButton from "../SubmitButton";
 import { Form } from "../ui/form";
 import { getPatient } from "@/lib/actions/patient.actions";
+import { useAppointments } from "../../../context/AppointmentsContext";
+import { formatDateTime } from "@/lib/utils";
+import axios from "axios";
 
 export const AppointmentForm = ({
   userId,
@@ -35,6 +39,7 @@ export const AppointmentForm = ({
   setOpen?: Dispatch<SetStateAction<boolean>>;
   onAppointmentUpdate?: () => void; // New callback to refresh data
 }) => {
+  const {appointments, setAppointments} = useAppointments();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const AppointmentFormValidation = getAppointmentSchema(type);
@@ -49,6 +54,52 @@ export const AppointmentForm = ({
       cancellationReason: appointment?.cancellationReason || "",
     },
   });
+
+  // update appointment
+  const updateAppointment = async ({
+    appointmentId,
+    phone,
+    userId, 
+    // @ts-ignore
+    timeZone,
+    appointment,
+    type,
+  }: UpdateAppointmentParams) => {
+    try {
+      
+      const smsMessage = `Greetings from CarePulse. ${
+        type === "schedule"
+          ? `Your appointment is confirmed for ${formatDateTime(
+              appointment.schedule!,
+              timeZone
+            ).dateTime} with Dr. ${appointment.primaryPhysician}`
+          : `We regret to inform that your appointment for ${formatDateTime(
+              appointment.schedule!,
+              timeZone
+            ).dateTime} is cancelled. Reason: ${appointment.cancellationReason}`
+      }.`;
+  
+      // Update appointment in the backend
+      const res = await axios.patch(`/api/appointment/updateAppointment/${appointmentId}`,
+        appointment
+      );
+  
+      // Send SMS notification
+      await sendSMSNotification(phone, smsMessage);
+  
+      // Get updated list of appointments and counts
+     const updatedAppointments = await getRecentAppointmentList();
+     setAppointments(updatedAppointments)
+  
+     return {
+      updatedAppointment: res.data,
+      ...updatedAppointments,
+    };
+    } catch (error) {
+      console.error("An error occurred while updating an appointment:", error);
+      throw new Error("Failed to update appointment");
+    }
+  };
 
   const onSubmit = async (values: z.infer<typeof AppointmentFormValidation>) => {
     setIsLoading(true);
