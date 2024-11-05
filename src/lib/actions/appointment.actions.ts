@@ -74,7 +74,11 @@ export const sendSMSNotification = async (phone: string, content: string) => {
 // GET All appointments
 export const getRecentAppointmentList = async () => {
   try {
-    const response = await axios.get(`/api/appointment/getAllAppointments?timestamp=${Date.now()}`);
+    const response = await  await axios.get('/api/appointment/getAllAppointments', {
+      headers: {
+        'Cache-Control': 'no-cache',
+      },
+    });
     const appointments = response.data;
 
     // Initial counts for the different statuses
