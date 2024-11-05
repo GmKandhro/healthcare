@@ -89,7 +89,7 @@ export const AppointmentForm = ({
   
       // Get updated list of appointments and counts
      const updatedAppointments = await getRecentAppointmentList();
-     setAppointments(updatedAppointments)
+      setAppointments(updatedAppointments)
   
      return {
       updatedAppointment: res.data,

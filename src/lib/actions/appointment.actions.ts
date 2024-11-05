@@ -116,48 +116,4 @@ export const getRecentAppointmentList = async () => {
 
 
 
-export const UpdateAppointment = async ({
-  appointmentId,
-  phone,
-  userId, 
-  // @ts-ignore
-  timeZone,
-  appointment,
-  type,
-}: UpdateAppointmentParams) => {
-  try {
-    const {appointments, setAppointments} = useAppointments();
-    const smsMessage = `Greetings from CarePulse. ${
-      type === "schedule"
-        ? `Your appointment is confirmed for ${formatDateTime(
-            appointment.schedule!,
-            timeZone
-          ).dateTime} with Dr. ${appointment.primaryPhysician}`
-        : `We regret to inform that your appointment for ${formatDateTime(
-            appointment.schedule!,
-            timeZone
-          ).dateTime} is cancelled. Reason: ${appointment.cancellationReason}`
-    }.`;
 
-    // Update appointment in the backend
-    const res = await axios.patch(
-      `/api/appointment/UpdateAppointment/${appointmentId}`,
-      appointment
-    );
-
-    // Send SMS notification
-    await sendSMSNotification(phone, smsMessage);
-
-    // Get updated list of appointments and counts
-   const updatedAppointments = await getRecentAppointmentList();
-   setAppointments(updatedAppointments)
-
-   return {
-    updatedAppointment: res.data,
-    ...updatedAppointments,
-  };
-  } catch (error) {
-    console.error("An error occurred while updating an appointment:", error);
-    throw new Error("Failed to update appointment");
-  }
-};
