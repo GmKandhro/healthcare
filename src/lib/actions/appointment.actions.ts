@@ -103,10 +103,13 @@ export const getRecentAppointmentList = async () => {
       initialCounts
     );
 
+   
+
     return {
       totalCount: appointments.length,
       ...counts,
       documents: appointments,
+      revalidate: 1,
     };
   } catch (error) {
     console.error("An error occurred while retrieving the appointments:", error);
