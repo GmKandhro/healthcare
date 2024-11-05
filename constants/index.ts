@@ -1,4 +1,4 @@
-export const GenderOptions = ["male", "female", "other"];
+export const GenderOptions = ["male", "female"];
 
 export const PatientFormDefaultValues = {
   firstName: "",
@@ -43,41 +43,42 @@ export const IdentificationTypes = [
 export const Doctors = [
   {
     image: "/assets/images/dr-green.png",
-    name: "John Green",
+    name: "Ali Hassan",
   },
   {
     image: "/assets/images/dr-cameron.png",
-    name: "Leila Cameron",
+    name: "Fatima Khan",
   },
   {
     image: "/assets/images/dr-livingston.png",
-    name: "David Livingston",
+    name: "Umar Farooq",
   },
   {
     image: "/assets/images/dr-peter.png",
-    name: "Evan Peter",
+    name: "Bilal Ahmed",
   },
   {
     image: "/assets/images/dr-powell.png",
-    name: "Jane Powell",
+    name: "Aisha Siddiqui",
   },
   {
     image: "/assets/images/dr-remirez.png",
-    name: "Alex Ramirez",
+    name: "Rizwan Malik",
   },
   {
     image: "/assets/images/dr-lee.png",
-    name: "Jasmine Lee",
+    name: "Sadia Ali",
   },
   {
     image: "/assets/images/dr-cruz.png",
-    name: "Alyana Cruz",
+    name: "Zainab Mirza",
   },
   {
     image: "/assets/images/dr-sharma.png",
-    name: "Hardik Sharma",
+    name: "Hamza Sheikh",
   },
 ];
+
 
 export const StatusIcon = {
   scheduled: "/assets/icons/check.svg",

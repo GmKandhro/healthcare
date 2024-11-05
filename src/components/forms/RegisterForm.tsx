@@ -47,6 +47,8 @@ const RegisterForm = ({ user }: { user: User }) => {
 
     try {
       const patient = {
+
+        
         userId: user._id,
         name: values.name,
         email: values.email,
