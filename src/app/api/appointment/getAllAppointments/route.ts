@@ -25,8 +25,11 @@ export async function GET() {
             return NextResponse.json({ message: "No appointments found" }, { status: 404 });
         }
 
-        // Return the list of appointments
-        return NextResponse.json(appointments, { status: 200 });
+        const response = NextResponse.json(appointments, { status: 200 });
+    // Set cache headers to prevent unnecessary caching
+    response.headers.set('Cache-Control', 'no-cache'); // Or 'no-store' for stronger prevention
+
+    return response;
     } catch (error:any) {
         console.error("Error fetching appointments:", error);
         // Return an error response

@@ -1,5 +1,4 @@
 "use client";
-"use cache"
 
 
 
@@ -59,6 +58,7 @@ export const sendSMSNotification = async (phone: string, content: string) => {
   
     return response.data
   } catch (error) {
+
     console.error("An error occurred while sending sms:", error);
   }
 };
