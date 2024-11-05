@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { AppointmentModel } from "@/models/appointmentModel";
 import dbconnect from "@/connectDb";
+import { revalidatePath } from "next/cache";
 
 export async function GET() {
     await dbconnect();
@@ -26,9 +27,9 @@ export async function GET() {
         }
 
         const response = NextResponse.json(appointments, { status: 200 });
-    
-  
-
+    // Set cache headers to prevent unnecessary caching
+    response.headers.set('Cache-Control', 'no-store'); // Or 'no-store' for stronger prevention
+        await revalidatePath("/admin")
     return response;
     } catch (error:any) {
         console.error("Error fetching appointments:", error);
