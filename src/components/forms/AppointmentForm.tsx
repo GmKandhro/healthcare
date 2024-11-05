@@ -1,5 +1,5 @@
 "use client";
-
+import { revalidatePath } from "next/cache";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -90,7 +90,7 @@ export const AppointmentForm = ({
       // Get updated list of appointments and counts
      const updatedAppointments = await getRecentAppointmentList();
       setAppointments(updatedAppointments)
-  
+      await revalidatePath('/admin');
      return {
       updatedAppointment: res.data,
       ...updatedAppointments,
