@@ -27,7 +27,7 @@ export async function GET() {
 
         const response = NextResponse.json(appointments, { status: 200 });
     // Set cache headers to prevent unnecessary caching
-    response.headers.set('Cache-Control', 'no-store'); // Or 'no-store' for stronger prevention
+    // response.headers.set('Cache-Control', 'no-store'); // Or 'no-store' for stronger prevention
 
     return response;
     } catch (error:any) {
