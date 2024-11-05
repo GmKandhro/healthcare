@@ -90,7 +90,8 @@ export const AppointmentForm = ({
       // Get updated list of appointments and counts
      const updatedAppointments = await getRecentAppointmentList();
       setAppointments(updatedAppointments)
-      await revalidatePath('/admin');
+      "use server"
+       revalidatePath('/admin');
      return {
       updatedAppointment: res.data,
       ...updatedAppointments,
